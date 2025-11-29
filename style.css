@@ -1,0 +1,73 @@
+/* Code block borders */
+.reveal pre code {
+  border: 1px solid #666;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+/* Show logo on regular slides */
+.reveal .slide-logo {
+  display: block !important;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  top: auto;
+  height: 120px !important;
+  width: 120px !important;
+  max-width: unset !important;
+  max-height: unset !important;
+}
+
+/* HIDE logo on title slide */
+body:has(#title-slide.present) .slide-logo {
+  display: none !important;
+}
+
+/* Slide number - Bottom Right */
+.reveal .slide-number {
+  position: fixed;
+  bottom: 20px !important;
+  right: 20px !important;
+  font-size: 18px !important;
+}
+
+/* HIDE title on title slide */
+#title-slide h1 {
+  display: none !important;
+}
+
+/* HIDE subtitle/date on title slide */
+#title-slide .subtitle,
+#title-slide p {
+  display: none !important;
+}
+
+/* Make the title slide use full height and push content to the bottom */
+#title-slide {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+/* Put the author names at the bottom, left and right */
+#title-slide .quarto-title-authors {
+  position: fixed;
+  bottom: -900px;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 15 60px;
+}
+
+
+
+/* Style of each name */
+#title-slide .quarto-title-author-name {
+  color: #4ECDC4;            /* text colour */
+  font-size: 1.2em;
+  font-weight: bold;
+  text-shadow: 2px 2px 6px rgba(0,0,0,0.8);
+}
+
+

@@ -137,7 +137,7 @@ means
 # Results — Mean Winnings {.fragments}
 
 ```{r}
-#| echo: true
+#| echo: false
 #| fig-height: 5
 #| fig-align: center
 

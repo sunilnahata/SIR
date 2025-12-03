@@ -339,44 +339,14 @@ Sunil NAHATA
 <span id="cb4-13"><a href=""></a>means</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>No Exchange      Random    Exchange 
-   328000.7    516000.5    655000.3 </code></pre>
+   318000.7    528000.5    636000.4 </code></pre>
 </div>
 </div>
 </section>
 
 <section id="results-mean-winnings" class="title-slide slide level1 fragments">
 <h1>Results — Mean Winnings</h1>
-<div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href=""></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb6-2"><a href=""></a>df_means <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb6-3"><a href=""></a>  <span class="at">Strategy =</span> <span class="fu">factor</span>(<span class="fu">names</span>(means), <span class="at">levels =</span> <span class="fu">names</span>(means)),</span>
-<span id="cb6-4"><a href=""></a>  <span class="at">Mean     =</span> <span class="fu">as.numeric</span>(means)</span>
-<span id="cb6-5"><a href=""></a>)</span>
-<span id="cb6-6"><a href=""></a></span>
-<span id="cb6-7"><a href=""></a><span class="fu">ggplot</span>(df_means, <span class="fu">aes</span>(<span class="at">x =</span> Strategy, <span class="at">y =</span> Mean, <span class="at">fill =</span> Strategy)) <span class="sc">+</span></span>
-<span id="cb6-8"><a href=""></a>  <span class="fu">geom_col</span>(<span class="at">color =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
-<span id="cb6-9"><a href=""></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">round</span>(Mean)), <span class="at">vjust =</span> <span class="sc">-</span><span class="fl">0.5</span>, <span class="at">size =</span> <span class="dv">5</span>) <span class="sc">+</span></span>
-<span id="cb6-10"><a href=""></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"No Exchange"</span> <span class="ot">=</span> <span class="st">"#CD7F32"</span>,</span>
-<span id="cb6-11"><a href=""></a>                               <span class="st">"Random"</span>    <span class="ot">=</span> <span class="st">"#C0C0C0"</span>,</span>
-<span id="cb6-12"><a href=""></a>                               <span class="st">"Exchange"</span>    <span class="ot">=</span> <span class="st">"#FFD700"</span>)) <span class="sc">+</span></span>
-<span id="cb6-13"><a href=""></a>  <span class="fu">scale_y_continuous</span>(</span>
-<span id="cb6-14"><a href=""></a>    <span class="at">labels =</span> <span class="cf">function</span>(x) <span class="fu">format</span>(x, <span class="at">scientific =</span> <span class="cn">FALSE</span>, <span class="at">big.mark =</span> <span class="st">""</span>),</span>
-<span id="cb6-15"><a href=""></a>    <span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fu">max</span>(df_means<span class="sc">$</span>Mean) <span class="sc">*</span> <span class="fl">1.1</span>)</span>
-<span id="cb6-16"><a href=""></a>  ) <span class="sc">+</span></span>
-<span id="cb6-17"><a href=""></a>  <span class="fu">labs</span>(</span>
-<span id="cb6-18"><a href=""></a>    <span class="at">title =</span> <span class="st">"Results of 1000 Games per Strategy"</span>,</span>
-<span id="cb6-19"><a href=""></a>    <span class="at">y =</span> <span class="st">"Mean winnings"</span>,</span>
-<span id="cb6-20"><a href=""></a>    <span class="at">x =</span> <span class="cn">NULL</span></span>
-<span id="cb6-21"><a href=""></a>  ) <span class="sc">+</span></span>
-<span id="cb6-22"><a href=""></a>  <span class="fu">theme</span>(</span>
-<span id="cb6-23"><a href=""></a>    <span class="at">legend.position =</span> <span class="st">"none"</span>,</span>
-<span id="cb6-24"><a href=""></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">18</span>, <span class="at">hjust =</span> <span class="fl">0.5</span>),</span>
-<span id="cb6-25"><a href=""></a>    <span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">20</span>),</span>
-<span id="cb6-26"><a href=""></a>    <span class="at">axis.text.x  =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">18</span>),</span>
-<span id="cb6-27"><a href=""></a>    <span class="at">axis.text.y  =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">16</span>)</span>
-<span id="cb6-28"><a href=""></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 
-</div>
 <img data-src="SIR_Presentation_files/figure-revealjs/unnamed-chunk-5-1.png" class="quarto-figure quarto-figure-center r-stretch" width="960"></section>
 
 <section id="interpretation" class="title-slide slide level1">

@@ -11,7 +11,7 @@
 
   <meta name="author" content="Arsid MASHI">
   <meta name="author" content="Sunil NAHATA">
-  <meta name="dcterms.date" content="2025-11-29">
+  <meta name="dcterms.date" content="2025-12-03">
   <title>Simulating the Monty Hall Problem</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -211,7 +211,7 @@ Sunil NAHATA
 </div>
 </div>
 
-  <p class="date">2025-11-29</p>
+  <p class="date">2025-12-03</p>
 </section>
 <section id="overview" class="title-slide slide level1">
 <h1>Overview</h1>
@@ -276,70 +276,107 @@ Sunil NAHATA
 <section id="no-switch" class="title-slide slide level1">
 <h1>No Switch</h1>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href=""></a><span class="co"># One game: No Switch</span></span>
-<span id="cb1-2"><a href=""></a>game_no_switch <span class="ot">&lt;-</span> <span class="cf">function</span>() {</span>
-<span id="cb1-3"><a href=""></a>  boxes <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">1e6</span>, <span class="fl">0.10</span>, <span class="fl">0.10</span>)</span>
-<span id="cb1-4"><a href=""></a>  pick <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="dv">1</span>)</span>
-<span id="cb1-5"><a href=""></a>  <span class="fu">return</span>(boxes[pick])</span>
-<span id="cb1-6"><a href=""></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href=""></a><span class="co"># Player chooses a box and sticks with his choice</span></span>
+<span id="cb1-2"><a href=""></a></span>
+<span id="cb1-3"><a href=""></a>game_no_box_change <span class="ot">=</span> <span class="cf">function</span>(){  </span>
+<span id="cb1-4"><a href=""></a>  box <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1000000</span>)  </span>
+<span id="cb1-5"><a href=""></a>  random_choice <span class="ot">=</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="at">size=</span> <span class="dv">1</span>) </span>
+<span id="cb1-6"><a href=""></a>  chosen_box <span class="ot">=</span> box[random_choice] </span>
+<span id="cb1-7"><a href=""></a>  remaining_boxes <span class="ot">=</span> box[<span class="sc">-</span>random_choice] </span>
+<span id="cb1-8"><a href=""></a>  <span class="fu">return</span>(chosen_box)  </span>
+<span id="cb1-9"><a href=""></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 
 <section id="always-switch" class="title-slide slide level1">
 <h1>Always switch</h1>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href=""></a><span class="co"># One game: Always switch</span></span>
-<span id="cb2-2"><a href=""></a>game_switch <span class="ot">&lt;-</span> <span class="cf">function</span>() {</span>
-<span id="cb2-3"><a href=""></a>  boxes <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">1e6</span>, <span class="fl">0.10</span>, <span class="fl">0.10</span>)</span>
-<span id="cb2-4"><a href=""></a>  pick <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="dv">1</span>)</span>
-<span id="cb2-5"><a href=""></a>  remaining <span class="ot">&lt;-</span> <span class="fu">setdiff</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, pick)</span>
-<span id="cb2-6"><a href=""></a>  presenter <span class="ot">&lt;-</span> remaining[boxes[remaining] <span class="sc">==</span> <span class="fl">0.10</span>][<span class="dv">1</span>]</span>
-<span id="cb2-7"><a href=""></a>  final_choice <span class="ot">&lt;-</span> <span class="fu">setdiff</span>(remaining, presenter)</span>
-<span id="cb2-8"><a href=""></a>  <span class="fu">return</span>(boxes[final_choice])</span>
-<span id="cb2-9"><a href=""></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href=""></a><span class="co"># Of the two remaining boxes, the presenter opens a box containing a dime </span></span>
+<span id="cb2-2"><a href=""></a></span>
+<span id="cb2-3"><a href=""></a>game_box_exchange <span class="ot">=</span> <span class="cf">function</span>(){</span>
+<span id="cb2-4"><a href=""></a>  box <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1000000</span>)</span>
+<span id="cb2-5"><a href=""></a>  random_choice <span class="ot">=</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="at">size=</span> <span class="dv">1</span>)</span>
+<span id="cb2-6"><a href=""></a>  remaining_boxes <span class="ot">=</span> box[<span class="sc">-</span>random_choice]</span>
+<span id="cb2-7"><a href=""></a>  <span class="cf">if</span> (<span class="fu">length</span>(<span class="fu">which</span>(remaining_boxes <span class="sc">==</span> <span class="dv">1</span>)) <span class="sc">==</span> <span class="dv">1</span>){</span>
+<span id="cb2-8"><a href=""></a>    chosen_box <span class="ot">=</span> remaining_boxes[<span class="sc">-</span><span class="fu">which</span>(remaining_boxes <span class="sc">==</span> <span class="dv">1</span>)]</span>
+<span id="cb2-9"><a href=""></a>  }</span>
+<span id="cb2-10"><a href=""></a>  <span class="cf">else</span> {</span>
+<span id="cb2-11"><a href=""></a>    chosen_box <span class="ot">=</span> remaining_boxes[<span class="sc">-</span><span class="fu">which</span>(remaining_boxes <span class="sc">==</span> <span class="dv">1</span>)[<span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>,<span class="dv">1</span>)]]</span>
+<span id="cb2-12"><a href=""></a>  }</span>
+<span id="cb2-13"><a href=""></a>  <span class="fu">return</span>(chosen_box)</span>
+<span id="cb2-14"><a href=""></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 
 <section id="random-choice" class="title-slide slide level1">
 <h1>Random choice</h1>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href=""></a><span class="co"># Random choice</span></span>
-<span id="cb3-2"><a href=""></a>game_random <span class="ot">&lt;-</span> <span class="cf">function</span>() {</span>
-<span id="cb3-3"><a href=""></a>  boxes <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">1e6</span>, <span class="fl">0.10</span>, <span class="fl">0.10</span>)</span>
-<span id="cb3-4"><a href=""></a>  pick <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="dv">1</span>)</span>
-<span id="cb3-5"><a href=""></a>  remaining <span class="ot">&lt;-</span> <span class="fu">setdiff</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, pick)</span>
-<span id="cb3-6"><a href=""></a>  presenter <span class="ot">&lt;-</span> remaining[boxes[remaining] <span class="sc">==</span> <span class="fl">0.10</span>][<span class="dv">1</span>]</span>
-<span id="cb3-7"><a href=""></a>  final_choice <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="fu">c</span>(pick, <span class="fu">setdiff</span>(remaining, presenter)), <span class="dv">1</span>)</span>
-<span id="cb3-8"><a href=""></a>  <span class="fu">return</span>(boxes[final_choice])</span>
-<span id="cb3-9"><a href=""></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href=""></a><span class="co"># Player chooses to keep the box chosen at the beginning or switch to the remaining box, a random choice</span></span>
+<span id="cb3-2"><a href=""></a></span>
+<span id="cb3-3"><a href=""></a>game_random_remain_pick <span class="ot">=</span> <span class="cf">function</span>(){   </span>
+<span id="cb3-4"><a href=""></a>  random_choice <span class="ot">=</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, <span class="at">size=</span> <span class="dv">1</span>)    </span>
+<span id="cb3-5"><a href=""></a>  <span class="cf">if</span> (random_choice <span class="sc">==</span> <span class="dv">1</span>) {<span class="fu">game_box_exchange</span>()}</span>
+<span id="cb3-6"><a href=""></a>  <span class="cf">else</span> {<span class="fu">game_no_box_change</span>()}</span>
+<span id="cb3-7"><a href=""></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 
-<section id="simulations-per-case" class="title-slide slide level1">
-<h1>1000 simulations per case</h1>
+<section id="simulations-per-strategy" class="title-slide slide level1">
+<h1>1000 simulations per strategy</h1>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href=""></a><span class="co"># Repeat 1000 games</span></span>
-<span id="cb4-2"><a href=""></a>N <span class="ot">&lt;-</span> <span class="dv">1000</span></span>
-<span id="cb4-3"><a href=""></a></span>
-<span id="cb4-4"><a href=""></a>mean_no_switch <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">replicate</span>(N, <span class="fu">game_no_switch</span>()))</span>
-<span id="cb4-5"><a href=""></a>mean_random    <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">replicate</span>(N, <span class="fu">game_random</span>()))</span>
-<span id="cb4-6"><a href=""></a>mean_switch    <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">replicate</span>(N, <span class="fu">game_switch</span>()))</span>
-<span id="cb4-7"><a href=""></a></span>
-<span id="cb4-8"><a href=""></a>means <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"No Switch"</span> <span class="ot">=</span> mean_no_switch,</span>
-<span id="cb4-9"><a href=""></a>              <span class="st">"Random"</span> <span class="ot">=</span> mean_random,</span>
-<span id="cb4-10"><a href=""></a>              <span class="st">"Switch"</span> <span class="ot">=</span> mean_switch)</span>
-<span id="cb4-11"><a href=""></a></span>
-<span id="cb4-12"><a href=""></a>means</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb4-2"><a href=""></a></span>
+<span id="cb4-3"><a href=""></a>N <span class="ot">&lt;-</span> <span class="dv">1000</span></span>
+<span id="cb4-4"><a href=""></a></span>
+<span id="cb4-5"><a href=""></a>mean_game_no_box_change <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">replicate</span>(N, <span class="fu">game_no_box_change</span>()))</span>
+<span id="cb4-6"><a href=""></a>mean_game_random_remain_pick <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">replicate</span>(N, <span class="fu">game_random_remain_pick</span>()))</span>
+<span id="cb4-7"><a href=""></a>mean_game_box_exchange <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">replicate</span>(N, <span class="fu">game_box_exchange</span>()))</span>
+<span id="cb4-8"><a href=""></a></span>
+<span id="cb4-9"><a href=""></a>means <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"No Exchange"</span> <span class="ot">=</span> mean_game_no_box_change,</span>
+<span id="cb4-10"><a href=""></a>              <span class="st">"Random"</span> <span class="ot">=</span> mean_game_random_remain_pick,</span>
+<span id="cb4-11"><a href=""></a>              <span class="st">"Exchange"</span> <span class="ot">=</span> mean_game_box_exchange)</span>
+<span id="cb4-12"><a href=""></a></span>
+<span id="cb4-13"><a href=""></a>means</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>No Switch    Random    Switch 
- 361000.1  512000.0  669000.0 </code></pre>
+<pre><code>No Exchange      Random    Exchange 
+   328000.7    516000.5    655000.3 </code></pre>
 </div>
 </div>
 </section>
 
 <section id="results-mean-winnings" class="title-slide slide level1 fragments">
 <h1>Results — Mean Winnings</h1>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href=""></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb6-2"><a href=""></a>df_means <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb6-3"><a href=""></a>  <span class="at">Strategy =</span> <span class="fu">factor</span>(<span class="fu">names</span>(means), <span class="at">levels =</span> <span class="fu">names</span>(means)),</span>
+<span id="cb6-4"><a href=""></a>  <span class="at">Mean     =</span> <span class="fu">as.numeric</span>(means)</span>
+<span id="cb6-5"><a href=""></a>)</span>
+<span id="cb6-6"><a href=""></a></span>
+<span id="cb6-7"><a href=""></a><span class="fu">ggplot</span>(df_means, <span class="fu">aes</span>(<span class="at">x =</span> Strategy, <span class="at">y =</span> Mean, <span class="at">fill =</span> Strategy)) <span class="sc">+</span></span>
+<span id="cb6-8"><a href=""></a>  <span class="fu">geom_col</span>(<span class="at">color =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
+<span id="cb6-9"><a href=""></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">round</span>(Mean)), <span class="at">vjust =</span> <span class="sc">-</span><span class="fl">0.5</span>, <span class="at">size =</span> <span class="dv">5</span>) <span class="sc">+</span></span>
+<span id="cb6-10"><a href=""></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"No Exchange"</span> <span class="ot">=</span> <span class="st">"#CD7F32"</span>,</span>
+<span id="cb6-11"><a href=""></a>                               <span class="st">"Random"</span>    <span class="ot">=</span> <span class="st">"#C0C0C0"</span>,</span>
+<span id="cb6-12"><a href=""></a>                               <span class="st">"Exchange"</span>    <span class="ot">=</span> <span class="st">"#FFD700"</span>)) <span class="sc">+</span></span>
+<span id="cb6-13"><a href=""></a>  <span class="fu">scale_y_continuous</span>(</span>
+<span id="cb6-14"><a href=""></a>    <span class="at">labels =</span> <span class="cf">function</span>(x) <span class="fu">format</span>(x, <span class="at">scientific =</span> <span class="cn">FALSE</span>, <span class="at">big.mark =</span> <span class="st">""</span>),</span>
+<span id="cb6-15"><a href=""></a>    <span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fu">max</span>(df_means<span class="sc">$</span>Mean) <span class="sc">*</span> <span class="fl">1.1</span>)</span>
+<span id="cb6-16"><a href=""></a>  ) <span class="sc">+</span></span>
+<span id="cb6-17"><a href=""></a>  <span class="fu">labs</span>(</span>
+<span id="cb6-18"><a href=""></a>    <span class="at">title =</span> <span class="st">"Results of 1000 Games per Strategy"</span>,</span>
+<span id="cb6-19"><a href=""></a>    <span class="at">y =</span> <span class="st">"Mean winnings"</span>,</span>
+<span id="cb6-20"><a href=""></a>    <span class="at">x =</span> <span class="cn">NULL</span></span>
+<span id="cb6-21"><a href=""></a>  ) <span class="sc">+</span></span>
+<span id="cb6-22"><a href=""></a>  <span class="fu">theme</span>(</span>
+<span id="cb6-23"><a href=""></a>    <span class="at">legend.position =</span> <span class="st">"none"</span>,</span>
+<span id="cb6-24"><a href=""></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">18</span>, <span class="at">hjust =</span> <span class="fl">0.5</span>),</span>
+<span id="cb6-25"><a href=""></a>    <span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">20</span>),</span>
+<span id="cb6-26"><a href=""></a>    <span class="at">axis.text.x  =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">18</span>),</span>
+<span id="cb6-27"><a href=""></a>    <span class="at">axis.text.y  =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">16</span>)</span>
+<span id="cb6-28"><a href=""></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 
+</div>
 <img data-src="SIR_Presentation_files/figure-revealjs/unnamed-chunk-5-1.png" class="quarto-figure quarto-figure-center r-stretch" width="960"></section>
 
 <section id="interpretation" class="title-slide slide level1">
@@ -348,12 +385,12 @@ Sunil NAHATA
 <li><p><strong>No switch</strong> ≈ 33%</p></li>
 <li><p><strong>Random</strong> ≈ 50%</p></li>
 <li><p><strong>Switch</strong> ≈ 66% ← Best strategy</p></li>
-<li><p>Switching increases the win probability by almost two times than staying.</p></li>
+<li><p><strong>Switching boxes</strong> increases the win probability by two times than <strong>sticking</strong> with the first choice.</p></li>
 </ul>
 </section>
 
 <section id="why-switching-wins" class="title-slide slide level1">
-<h1>Why switching wins</h1>
+<h1>Why switching wins?</h1>
 <ul>
 <li><p>Initial pick has probability 1/3 of being the million</p></li>
 <li><p>The two other boxes together have 2/3</p></li>

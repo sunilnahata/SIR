@@ -68,11 +68,14 @@ We simulate three functions (*no switch*, *switch*, *random*). Each game:
 
 ```{r}
 
-# One game: No Switch
-game_no_switch <- function() {
-  boxes <- c(1e6, 0.10, 0.10)
-  pick <- sample(1:3, 1)
-  return(boxes[pick])
+# Player chooses a box and sticks with his choice
+
+game_no_box_change = function(){  
+  box = c(1, 1, 1000000)  
+  random_choice = sample(1:3, size= 1) 
+  chosen_box = box[random_choice] 
+  remaining_boxes = box[-random_choice] 
+  return(chosen_box)  
 }
 
 ```
@@ -80,49 +83,53 @@ game_no_switch <- function() {
 # Always switch
 
 ```{r}
-# One game: Always switch
-game_switch <- function() {
-  boxes <- c(1e6, 0.10, 0.10)
-  pick <- sample(1:3, 1)
-  remaining <- setdiff(1:3, pick)
-  presenter <- remaining[boxes[remaining] == 0.10][1]
-  final_choice <- setdiff(remaining, presenter)
-  return(boxes[final_choice])
+
+# Of the two remaining boxes, the presenter opens a box containing a dime 
+
+game_box_exchange = function(){
+  box = c(1, 1, 1000000)
+  random_choice = sample(1:3, size= 1)
+  remaining_boxes = box[-random_choice]
+  if (length(which(remaining_boxes == 1)) == 1){
+    chosen_box = remaining_boxes[-which(remaining_boxes == 1)]
+  }
+  else {
+    chosen_box = remaining_boxes[-which(remaining_boxes == 1)[sample(1:2,1)]]
+  }
+  return(chosen_box)
 }
+
 ```
 
 # Random choice
 
 ```{r}
-# Random choice
-game_random <- function() {
-  boxes <- c(1e6, 0.10, 0.10)
-  pick <- sample(1:3, 1)
-  remaining <- setdiff(1:3, pick)
-  presenter <- remaining[boxes[remaining] == 0.10][1]
-  final_choice <- sample(c(pick, setdiff(remaining, presenter)), 1)
-  return(boxes[final_choice])
+# Player chooses to keep the box chosen at the beginning or switch to the remaining box, a random choice
+
+game_random_remain_pick = function(){   
+  random_choice = sample(1:2, size= 1)    
+  if (random_choice == 1) {game_box_exchange()}
+  else {game_no_box_change()}
 }
 ```
 
 
 
-# 1000 simulations per case
+# 1000 simulations per strategy
 
 ```{r}
-
-
 
 # Repeat 1000 games
+
 N <- 1000
 
-mean_no_switch <- mean(replicate(N, game_no_switch()))
-mean_random    <- mean(replicate(N, game_random()))
-mean_switch    <- mean(replicate(N, game_switch()))
+mean_game_no_box_change <- mean(replicate(N, game_no_box_change()))
+mean_game_random_remain_pick <- mean(replicate(N, game_random_remain_pick()))
+mean_game_box_exchange <- mean(replicate(N, game_box_exchange()))
 
-means <- c("No Switch" = mean_no_switch,
-              "Random" = mean_random,
-              "Switch" = mean_switch)
+means <- c("No Exchange" = mean_game_no_box_change,
+              "Random" = mean_game_random_remain_pick,
+              "Exchange" = mean_game_box_exchange)
 
 means
 ```
@@ -130,8 +137,8 @@ means
 # Results — Mean Winnings {.fragments}
 
 ```{r}
-#| echo: false
-#| fig-height: 6
+#| echo: true
+#| fig-height: 5
 #| fig-align: center
 
 
@@ -144,9 +151,9 @@ df_means <- data.frame(
 ggplot(df_means, aes(x = Strategy, y = Mean, fill = Strategy)) +
   geom_col(color = "black") +
   geom_text(aes(label = round(Mean)), vjust = -0.5, size = 5) +
-  scale_fill_manual(values = c("No Switch" = "grey70",
-                               "Random"    = "skyblue",
-                               "Switch"    = "gold")) +
+  scale_fill_manual(values = c("No Exchange" = "#CD7F32",
+                               "Random"    = "#C0C0C0",
+                               "Exchange"    = "#FFD700")) +
   scale_y_continuous(
     labels = function(x) format(x, scientific = FALSE, big.mark = ""),
     limits = c(0, max(df_means$Mean) * 1.1)
@@ -173,9 +180,10 @@ ggplot(df_means, aes(x = Strategy, y = Mean, fill = Strategy)) +
 
 -   **Switch** ≈ 66% ← Best strategy
 
--   Switching increases the win probability by almost two times than staying.
+-   **Switching boxes** increases the win probability by two times than 
+**sticking** with the first choice.
 
-# Why switching wins
+# Why switching wins?
 
 
 -   Initial pick has probability 1/3 of being the million

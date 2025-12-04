@@ -60,8 +60,6 @@ body:has(#title-slide.present) .slide-logo {
   padding: 15 60px;
 }
 
-
-
 /* Style of each name */
 #title-slide .quarto-title-author-name {
   color: #4ECDC4;            /* text colour */
@@ -69,5 +67,3 @@ body:has(#title-slide.present) .slide-logo {
   font-weight: bold;
   text-shadow: 2px 2px 6px rgba(0,0,0,0.8);
 }
-
-

@@ -13,6 +13,11 @@ format:
     title-slide-style: default     # use Quarto title slide
     width: 1400     # or e.g. 1400
     height: 900      # taller than default 700
+    pointer:
+      pointerSize: 18
+      color: 'blue'
+revealjs-plugins:
+  - pointer
 css: style.css
 execute:
   echo: true
@@ -44,29 +49,33 @@ title-slide-attributes:
 
 # Rules of the game
 
-Player then chooses: - **No switch** - **Switch** - **Random choice**
+Player then chooses: - **No exchange** - **Exchange** - **Random choice**
 
 Goal: maximize expected winnings
 
-# Why this is interesting
-
+# Why is this interesting?
+::: {.incremental}
 -   Intuition: "Two boxes left → 50/50"\
 -   Reality: conditional probability changes the situation\
 -   We'll test by simulation (1000 runs per strategy)
+:::
 
 # Simulation 
 
-We simulate three functions (*no switch*, *switch*, *random*). Each game:
+We simulate three functions (*no exchange*, *exchange*, *random choice*). 
 
-1.  Create boxes `c(1e6, 0.10, 0.10)` placed randomly
-2.  Player makes an initial uniform random pick
-3.  Host opens a dime box among the remaining
-4.  Player applies a strategy to pick final box
-5.  Repeat N times and compute mean winnings
+::: {.incremental}
+-   Create boxes `c(1, 1, 1,000,000)` placed randomly
+-   Player makes an initial uniform random pick
+-   Host opens a dime box among the remaining
+-   Player applies a strategy to pick final box
+-   Repeat N times and compute mean winnings
+:::
 
-# No Switch
+# No Exchange
 
 ```{r}
+#| code-line-numbers: "|4-8"
 
 # Player chooses a box and sticks with his choice
 
@@ -80,23 +89,20 @@ game_no_box_change = function(){
 
 ```
 
-# Always switch
+# Always exchange
 
 ```{r}
+#| code-line-numbers: "|4-9"
 
 # Of the two remaining boxes, the presenter opens a box containing a dime 
 
 game_box_exchange = function(){
-  box = c(1, 1, 1000000)
-  random_choice = sample(1:3, size= 1)
-  remaining_boxes = box[-random_choice]
-  if (length(which(remaining_boxes == 1)) == 1){
-    chosen_box = remaining_boxes[-which(remaining_boxes == 1)]
-  }
-  else {
-    chosen_box = remaining_boxes[-which(remaining_boxes == 1)[sample(1:2,1)]]
-  }
-  return(chosen_box)
+  boxes <- c(1000000, 1, 1)
+  pick <- sample(1:3, 1)
+  remaining <- setdiff(1:3, pick)
+  presenter <- remaining[boxes[remaining] == 1][1]
+  final_choice <- setdiff(remaining, presenter)
+  return(boxes[final_choice])
 }
 
 ```
@@ -104,6 +110,8 @@ game_box_exchange = function(){
 # Random choice
 
 ```{r}
+#| code-line-numbers: "|4-6"
+
 # Player chooses to keep the box chosen at the beginning or switch to the remaining box, a random choice
 
 game_random_remain_pick = function(){   
@@ -118,6 +126,7 @@ game_random_remain_pick = function(){
 # 1000 simulations per strategy
 
 ```{r}
+#| code-line-numbers: "|3|5-7|9-13"
 
 # Repeat 1000 games
 
@@ -183,17 +192,50 @@ ggplot(df_means, aes(x = Strategy, y = Mean, fill = Strategy)) +
 -   **Switching boxes** increases the win probability by two times than 
 **sticking** with the first choice.
 
-# Why switching wins?
+
+# Why Random Choice = 50%
+
+:::{.incremental}
+- Random choice = half the time you switch, half the time you don’t
+- Switching wins **2/3**
+- Not switching wins **1/3**
+- Average = 0.5×(2/3) + 0.5×(1/3) = **1/2**
+:::
+
+::: {.fragment}
+$$
+\text{Win probability of random choice}
+= \frac{1}{2}\left(\frac{2}{3}\right)
++ \frac{1}{2}\left(\frac{1}{3}\right)
+= \frac{1}{2}
+$$
+:::
+
+# Why Switching Wins
+
+$$
+\scriptsize
+\displaystyle
+\begin{aligned}
+P(B_{\text{initial}} = 1{,}000{,}000 \mid \text{host reveals 1}) 
+&= \frac{
+    P(\text{host reveals 1} \mid B_{\text{initial}} = 1{,}000{,}000) 
+    \cdot P(B_{\text{initial}} = 1{,}000{,}000)
+}{P(\text{host reveals 1})}
+\end{aligned}
+$$
 
 
--   Initial pick has probability 1/3 of being the million
 
--   The two other boxes together have 2/3
-
--   Host removes one losing box among the two others
-
--   The remaining closed box therefore carries the full 2/3 probability
-
-
+$$
+\scriptsize
+\begin{align}
+P(B_{\text{initial}} = 1{,}000{,}000) &= \frac{1}{3} \\
+P(\text{host reveals 1} \mid B_{\text{initial}} = 1{,}000{,}000) &= 1 \\
+P(\text{host reveals 1}) &= 1 \\
+P(B_{\text{initial}} = 1{,}000{,}000 \mid \text{host reveals 1}) &= \frac{1}{3} \\
+P(\text{switch to other box}) &= \frac{2}{3}
+\end{align}
+$$
 
 
